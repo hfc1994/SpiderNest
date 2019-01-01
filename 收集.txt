@@ -1,0 +1,16 @@
+杭州豆瓣 
+小组普通讨论：https://www.douban.com/group/hangzhou/discussion?start=0
+小组热门讨论：https://www.douban.com/group/hangzhou/discussion?start=0&type=essence
+帖子首页：https://www.douban.com/group/topic/130120052/		---	也相当于是?start=0
+帖子第二页：https://www.douban.com/group/topic/130120052/?start=100
+
+具体成员页面：https://www.douban.com/people/qijiuzhiyue/
+
+数据库得支持emoji表情的插入，或者找转换方法
+
+数据表
+成员表---uuid，豆瓣唯一id，豆瓣昵称，个性签名，加入时间，长居地，简介，关注数，被关注数，常去的小组数，豆瓣页面url，头像url，在看电影数，想看电影数，已看电影数，想听音乐数，听过音乐数，在读书籍数，想读书籍数，读过书籍数，更新时间
+
+帖子表---uuid，帖子名字，帖子url，作者id，作者名字，帖子来源，回应数，最后回应时间，更新时间
+
+帖子回复表---uuid，帖子url，回复id，作者id，作者名字，回应时间，回应来源，赞数，更新时间
