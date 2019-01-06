@@ -24,18 +24,24 @@
         <mysql-connector.version>5.1.42</mysql-connector.version>
     </properties>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>${spring-boot.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
+            <!--<version>${spring-boot.version}</version>-->
+        <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-autoconfigure -->
         <dependency>
@@ -47,6 +53,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
 

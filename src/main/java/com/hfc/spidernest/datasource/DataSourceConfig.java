@@ -1,4 +1,4 @@
-package com.hfc.datasource;
+package com.hfc.spidernest.datasource;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  * Created by user-hfc on 2019/1/3.
  */
 @Configuration
-@MapperScan(basePackages = "com.hfc.dao.mapper", sqlSessionFactoryRef = "spiderNestSqlSessionFactory")
+@MapperScan(basePackages = "com.hfc.spidernest.dao.mapper", sqlSessionFactoryRef = "spiderNestSqlSessionFactory")
 public class DataSourceConfig {
 
     @Bean(name = "spiderNestDataSource")
