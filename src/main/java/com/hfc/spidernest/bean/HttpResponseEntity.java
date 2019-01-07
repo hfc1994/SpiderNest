@@ -9,16 +9,16 @@ import org.apache.http.HttpResponse;
 public class HttpResponseEntity {
 
     private int statusCode;
-    private HttpEntity entity;
+    private HttpResponse response;
 
-    public HttpResponseEntity(int statusCode, HttpEntity entity) {
+    public HttpResponseEntity(int statusCode, HttpResponse response) {
         this.statusCode = statusCode;
-        this.entity = entity;
+        this.response = response;
     }
 
     public HttpResponseEntity(HttpResponse response) {
         this.statusCode = response.getStatusLine().getStatusCode();
-        this.entity = response.getEntity();
+        this.response = response;
     }
 
     public static HttpResponseEntity getRespEntity(HttpResponse response) {
@@ -29,15 +29,15 @@ public class HttpResponseEntity {
         }
     }
 
-    public static HttpResponseEntity getRespEntity(int statusCode, HttpEntity entity) {
-        return new HttpResponseEntity(statusCode, entity);
+    public static HttpResponseEntity getRespEntity(int statusCode, HttpResponse response) {
+        return new HttpResponseEntity(statusCode, response);
     }
 
     public int getStatusCode() {
         return statusCode;
     }
 
-    public HttpEntity getEntity() {
-        return entity;
+    public HttpResponse getResponse() {
+        return response;
     }
 }
