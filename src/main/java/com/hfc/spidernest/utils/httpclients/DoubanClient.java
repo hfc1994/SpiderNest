@@ -22,18 +22,17 @@ public class DoubanClient implements Clients {
 
     @Override
     public CloseableHttpClient getClient() {
-        CloseableHttpClient client= HttpClientBuilder.create()
+        return HttpClientBuilder.create()
                 .setDefaultRequestConfig(Constant.defaultHttpConfig)
                 .setDefaultHeaders(this.buildHeaders())
                 .build();
-        return client;
     }
 
     @Override
     public List<Header> buildHeaders() {
         if (headers == null ) {
             headers = new ArrayList<>(6);
-            headers.add(new BasicHeader("Accept-Encoding", "gzip, deflate"));
+            headers.add(new BasicHeader("Accept-Encoding", "gzip, deflate, br"));
             headers.add(new BasicHeader("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8"));
             headers.add(new BasicHeader("Connection", "keep-alive"));
             headers.add(new BasicHeader("Upgrade-Insecure-Requests", "1"));

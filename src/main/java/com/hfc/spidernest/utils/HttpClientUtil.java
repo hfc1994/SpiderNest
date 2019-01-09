@@ -17,44 +17,25 @@ public class HttpClientUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientUtil.class.getName());
 
-    // @todo 试试是用try with resource的方式
-    public String doGet(CloseableHttpClient client, String url) {
+    // try-with-resource语法
+    public static String doGet(CloseableHttpClient client, String url) {
         HttpGet httpGet = new HttpGet(url);
-        CloseableHttpResponse response = null;
-        try {
-            response = client.execute(httpGet);
+        try (CloseableHttpResponse response = client.execute(httpGet)) {
             return EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             LOGGER.error("httpGet执行失败：" + e.getMessage(), e);
             return null;
-        } finally {
-            if (null != response) {
-                try {
-                    response.close();
-                } catch (IOException ioe) {
-                    LOGGER.error("httpclient关闭异常：" + ioe.getMessage(), ioe);
-                }
-            }
         }
     }
 
-    public String doPost(CloseableHttpClient client, String url) {
+    // try-with-resource语法
+    public static String doPost(CloseableHttpClient client, String url) {
         HttpPost httpPost = new HttpPost(url);
-        CloseableHttpResponse response = null;
-        try {
-            response = client.execute(httpPost);
+        try (CloseableHttpResponse response = client.execute(httpPost)) {
             return EntityUtils.toString(response.getEntity());
         } catch (IOException e) {
             LOGGER.error("httpPost执行失败：" + e.getMessage(), e);
             return null;
-        } finally {
-            if (null != response) {
-                try {
-                    response.close();
-                } catch (IOException ioe) {
-                    LOGGER.error("httpclient关闭异常：" + ioe.getMessage(), ioe);
-                }
-            }
         }
     }
 }
