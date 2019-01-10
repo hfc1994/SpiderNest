@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hfc.spidernest.dao.mapper.ReplyMapper">
+  <resultMap id="BaseResultMap" type="com.hfc.spidernest.bean.douban.Reply">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="topic_url" jdbcType="VARCHAR" property="topicUrl" />
+    <result column="replier_id" jdbcType="VARCHAR" property="replierId" />
+    <result column="replier_name" jdbcType="VARCHAR" property="replierName" />
+    <result column="reply_src" jdbcType="BIT" property="replySrc" />
+    <result column="topicer" jdbcType="BIT" property="topicer" />
+    <result column="likes" jdbcType="INTEGER" property="likes" />
+    <result column="reply_time" jdbcType="TIMESTAMP" property="replyTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="reply_text" jdbcType="LONGVARCHAR" property="replyText" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from reply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hfc.spidernest.bean.douban.Reply">
+    insert into reply (id, topic_url, replier_id, 
+      replier_name, reply_src, topicer, 
+      likes, reply_time, create_time, 
+      reply_text)
+    values (#{id,jdbcType=INTEGER}, #{topicUrl,jdbcType=VARCHAR}, #{replierId,jdbcType=VARCHAR}, 
+      #{replierName,jdbcType=VARCHAR}, #{replySrc,jdbcType=BIT}, #{topicer,jdbcType=BIT}, 
+      #{likes,jdbcType=INTEGER}, #{replyTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{replyText,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hfc.spidernest.bean.douban.Reply">
+    update reply
+    set topic_url = #{topicUrl,jdbcType=VARCHAR},
+      replier_id = #{replierId,jdbcType=VARCHAR},
+      replier_name = #{replierName,jdbcType=VARCHAR},
+      reply_src = #{replySrc,jdbcType=BIT},
+      topicer = #{topicer,jdbcType=BIT},
+      likes = #{likes,jdbcType=INTEGER},
+      reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      reply_text = #{replyText,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, topic_url, replier_id, replier_name, reply_src, topicer, likes, reply_time, 
+    create_time, reply_text
+    from reply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, topic_url, replier_id, replier_name, reply_src, topicer, likes, reply_time, 
+    create_time, reply_text
+    from reply
+  </select>
+</mapper>

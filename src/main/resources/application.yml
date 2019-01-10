@@ -23,6 +23,9 @@ spring:
       time-between-eviction-runs-millis: 60000
       min-evictable-idle-time-millis: 300000
 
+mybatis:
+  mapper-location: classpath:mapper/*.xml
+  type-aliases-package: com.hfc.spidernest.bean
 
 # 豆瓣爬虫的设置
 douban:
