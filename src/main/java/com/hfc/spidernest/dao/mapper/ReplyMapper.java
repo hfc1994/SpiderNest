@@ -1,6 +1,6 @@
 package com.hfc.spidernest.dao.mapper;
 
-import com.hfc.spidernest.bean.douban.Reply;
+import com.hfc.spidernest.entity.douban.Reply;
 import java.util.List;
 
 public interface ReplyMapper {

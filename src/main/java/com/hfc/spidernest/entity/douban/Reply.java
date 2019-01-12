@@ -1,4 +1,4 @@
-package com.hfc.spidernest.bean.douban;
+package com.hfc.spidernest.entity.douban;
 
 import java.util.Date;
 

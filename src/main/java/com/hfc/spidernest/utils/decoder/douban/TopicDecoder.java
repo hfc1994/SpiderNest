@@ -1,56 +1,40 @@
-package com.hfc.spidernest;
+package com.hfc.spidernest.utils.decoder.douban;
 
 import com.hfc.spidernest.entity.douban.Topic;
-import com.hfc.spidernest.utils.HttpClientUtil;
-import com.hfc.spidernest.utils.httpclients.DoubanClient;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.jsoup.Jsoup;
+import com.hfc.spidernest.utils.decoder.HtmlDecoder;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
- * Created by user-hfc on 2019/1/8.
+ * Created by user-hfc on 2019/1/12.
  */
-public class DailyTest {
+public class TopicDecoder implements HtmlDecoder<Topic> {
 
-    public static void main(String... args) {
-        normalTest();
-//        doubanTopicSpider();
-    }
+    private static Logger LOGGER = LoggerFactory.getLogger(TopicDecoder.class.getName());
 
-    public static void normalTest() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String datetime = "2019-01-12 18:37:38";
-        LocalDateTime ldt = LocalDateTime.from(dtf.parse(datetime));
-        // @todo LocalDateTime转Date
-        System.out.println(ldt.toString());
-    }
+    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    // 豆瓣话题页面的爬虫测试
-    public static void doubanTopicSpider() {
-        DoubanClient doubanClient = new DoubanClient();
-        CloseableHttpClient client = doubanClient.getClient();
+    @Override
+    public List<Topic> decode(Object object) {
 
-        String url = "https://www.douban.com/group/hangzhou/discussion?start=0";
-        String document = HttpClientUtil.doGet(client, url);
 
-//        System.out.println(document);
-        if (null != document) {
-            Document doc = Jsoup.parse(document, "utf-8");
+        if (object instanceof Document) {
+            List<Topic> topicList = new ArrayList<>(8);
 
+            Document doc = (Document) object;
             Element tbody = doc.select(".article .olt tbody").get(0);
             Elements elements = tbody.children();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for (Element e1 : elements) {
                 if (e1.classNames().contains("th")) {
                     continue;
@@ -78,12 +62,13 @@ public class DailyTest {
                             String lastReplyTime = e2.text();
                             if (lastReplyTime.indexOf("-") == 2) {
                                 lastReplyTime = "2019-" + lastReplyTime + ":00";
-                                try {
-                                    Date d = sdf.parse(lastReplyTime);
-                                    topic.setModifyTime(d);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+                                // @todo 使用LocalDateTime获取时间，最后再转Date
+//                                try {
+//
+//                                    topic.setModifyTime(d);
+//                                } catch (ParseException e) {
+//                                    e.printStackTrace();
+//                                }
                             }
                             break;
                     }
@@ -97,7 +82,10 @@ public class DailyTest {
                 System.out.println(sb.toString());
                 System.out.println("-----------");
             }
-            System.out.println("帖子总数是" + elements.size());
+
+            return null;
+        } else {
+            return null;
         }
     }
 }

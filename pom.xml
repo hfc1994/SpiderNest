@@ -27,7 +27,7 @@
         <!-- mybatis生成代码的配置参数 -->
         <targetJavaProject>${basedir}/src/main/java</targetJavaProject>
         <targetMapperPackage>com.hfc.spidernest.dao.mapper</targetMapperPackage>
-        <targetModelPackage>com.hfc.spidernest.bean.douban</targetModelPackage>
+        <targetModelPackage>com.hfc.spidernest.entity.douban</targetModelPackage>
         <targetResourcesProject>${basedir}/src/main/resources</targetResourcesProject>
         <targetXmlPackage>mapper</targetXmlPackage>
     </properties>

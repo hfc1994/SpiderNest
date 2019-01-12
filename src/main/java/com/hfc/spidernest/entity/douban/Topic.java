@@ -1,11 +1,11 @@
-package com.hfc.spidernest.bean.douban;
+package com.hfc.spidernest.entity.douban;
 
 import java.util.Date;
 
 public class Topic {
     private Integer id;
 
-    private String name;
+    private String title;
 
     private String url;
 
@@ -27,12 +27,12 @@ public class Topic {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
     }
 
     public String getUrl() {

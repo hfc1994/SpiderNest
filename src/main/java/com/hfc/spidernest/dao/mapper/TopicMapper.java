@@ -1,6 +1,6 @@
 package com.hfc.spidernest.dao.mapper;
 
-import com.hfc.spidernest.bean.douban.Topic;
+import com.hfc.spidernest.entity.douban.Topic;
 import java.util.List;
 
 public interface TopicMapper {

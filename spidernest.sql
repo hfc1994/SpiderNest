@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50709
 File Encoding         : 65001
 
-Date: 2019-01-01 16:46:22
+Date: 2019-01-12 17:46:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,7 +78,7 @@ CREATE TABLE `reply` (
 DROP TABLE IF EXISTS `topic`;
 CREATE TABLE `topic` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(64) NOT NULL COMMENT '帖子名称',
+  `title` varchar(64) NOT NULL COMMENT '帖子名称',
   `url` varchar(64) NOT NULL COMMENT '帖子链接',
   `author_id` varchar(32) DEFAULT NULL COMMENT '作者id',
   `author_name` varchar(16) NOT NULL COMMENT '作者昵称',

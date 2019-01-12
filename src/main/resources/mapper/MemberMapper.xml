@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hfc.spidernest.dao.mapper.MemberMapper">
-  <resultMap id="BaseResultMap" type="com.hfc.spidernest.bean.douban.Member">
+  <resultMap id="BaseResultMap" type="com.hfc.spidernest.entity.douban.Member">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
@@ -28,7 +28,7 @@
     delete from member
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hfc.spidernest.bean.douban.Member">
+  <insert id="insert" parameterType="com.hfc.spidernest.entity.douban.Member">
     insert into member (id, user_id, nickname, 
       signature, join_date, place, 
       follow, follower, follow_group, 
@@ -46,7 +46,89 @@
       #{readed,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{intro,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.hfc.spidernest.bean.douban.Member">
+  <update id="updateByPrimaryKey" parameterType="com.hfc.spidernest.entity.douban.Member">
+    update member
+    set user_id = #{userId,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      signature = #{signature,jdbcType=VARCHAR},
+      join_date = #{joinDate,jdbcType=DATE},
+      place = #{place,jdbcType=VARCHAR},
+      follow = #{follow,jdbcType=INTEGER},
+      follower = #{follower,jdbcType=INTEGER},
+      follow_group = #{followGroup,jdbcType=INTEGER},
+      user_url = #{userUrl,jdbcType=VARCHAR},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      watching = #{watching,jdbcType=INTEGER},
+      wish_watch = #{wishWatch,jdbcType=INTEGER},
+      watched = #{watched,jdbcType=INTEGER},
+      wish_listen = #{wishListen,jdbcType=INTEGER},
+      listened = #{listened,jdbcType=INTEGER},
+      reading = #{reading,jdbcType=INTEGER},
+      wish_read = #{wishRead,jdbcType=INTEGER},
+      readed = #{readed,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      intro = #{intro,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, user_id, nickname, signature, join_date, place, follow, follower, follow_group, 
+    user_url, avatar_url, watching, wish_watch, watched, wish_listen, listened, reading, 
+    wish_read, readed, create_time, intro
+    from member
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, nickname, signature, join_date, place, follow, follower, follow_group, 
+    user_url, avatar_url, watching, wish_watch, watched, wish_listen, listened, reading, 
+    wish_read, readed, create_time, intro
+    from member
+  </select>
+  <resultMap id="BaseResultMap" type="com.hfc.spidernest.entity.douban.Member">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="signature" jdbcType="VARCHAR" property="signature" />
+    <result column="join_date" jdbcType="DATE" property="joinDate" />
+    <result column="place" jdbcType="VARCHAR" property="place" />
+    <result column="follow" jdbcType="INTEGER" property="follow" />
+    <result column="follower" jdbcType="INTEGER" property="follower" />
+    <result column="follow_group" jdbcType="INTEGER" property="followGroup" />
+    <result column="user_url" jdbcType="VARCHAR" property="userUrl" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="watching" jdbcType="INTEGER" property="watching" />
+    <result column="wish_watch" jdbcType="INTEGER" property="wishWatch" />
+    <result column="watched" jdbcType="INTEGER" property="watched" />
+    <result column="wish_listen" jdbcType="INTEGER" property="wishListen" />
+    <result column="listened" jdbcType="INTEGER" property="listened" />
+    <result column="reading" jdbcType="INTEGER" property="reading" />
+    <result column="wish_read" jdbcType="INTEGER" property="wishRead" />
+    <result column="readed" jdbcType="INTEGER" property="readed" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="intro" jdbcType="LONGVARCHAR" property="intro" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from member
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hfc.spidernest.entity.douban.Member">
+    insert into member (id, user_id, nickname, 
+      signature, join_date, place, 
+      follow, follower, follow_group, 
+      user_url, avatar_url, watching, 
+      wish_watch, watched, wish_listen, 
+      listened, reading, wish_read, 
+      readed, create_time, intro
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{signature,jdbcType=VARCHAR}, #{joinDate,jdbcType=DATE}, #{place,jdbcType=VARCHAR}, 
+      #{follow,jdbcType=INTEGER}, #{follower,jdbcType=INTEGER}, #{followGroup,jdbcType=INTEGER}, 
+      #{userUrl,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{watching,jdbcType=INTEGER}, 
+      #{wishWatch,jdbcType=INTEGER}, #{watched,jdbcType=INTEGER}, #{wishListen,jdbcType=INTEGER}, 
+      #{listened,jdbcType=INTEGER}, #{reading,jdbcType=INTEGER}, #{wishRead,jdbcType=INTEGER}, 
+      #{readed,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{intro,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hfc.spidernest.entity.douban.Member">
     update member
     set user_id = #{userId,jdbcType=VARCHAR},
       nickname = #{nickname,jdbcType=VARCHAR},

@@ -1,6 +1,6 @@
 package com.hfc.spidernest.dao.mapper;
 
-import com.hfc.spidernest.bean.douban.Member;
+import com.hfc.spidernest.entity.douban.Member;
 import java.util.List;
 
 public interface MemberMapper {
