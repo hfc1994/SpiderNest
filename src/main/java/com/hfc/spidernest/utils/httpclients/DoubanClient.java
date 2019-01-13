@@ -18,12 +18,12 @@ import java.util.Random;
 public class DoubanClient implements Clients {
 
     private List<Header> headers = null;
-    private Random random = new Random(Constant.randomSeed);
+    private Random random = new Random(Constant.RANDOM_SEED);
 
     @Override
     public CloseableHttpClient getClient() {
         return HttpClientBuilder.create()
-                .setDefaultRequestConfig(Constant.defaultHttpConfig)
+                .setDefaultRequestConfig(Constant.DEFAULT_HTTP_CONFIG)
                 .setDefaultHeaders(this.buildHeaders())
                 .build();
     }
@@ -37,11 +37,11 @@ public class DoubanClient implements Clients {
             headers.add(new BasicHeader("Connection", "keep-alive"));
             headers.add(new BasicHeader("Upgrade-Insecure-Requests", "1"));
             headers.add(new BasicHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"));
-            headers.add(new BasicHeader("User-Agent", Constant.userAgentArray[random.nextInt(Constant.userAgentArray.length)]));
+            headers.add(new BasicHeader("User-Agent", Constant.USER_AGENT_ARRAY[random.nextInt(Constant.USER_AGENT_ARRAY.length)]));
         }
 
         // 每次都是用新的用户代理头
-        headers.set(5, new BasicHeader("User-Agent", Constant.userAgentArray[random.nextInt(Constant.userAgentArray.length)]));
+        headers.set(5, new BasicHeader("User-Agent", Constant.USER_AGENT_ARRAY[random.nextInt(Constant.USER_AGENT_ARRAY.length)]));
         return headers;
     }
 }

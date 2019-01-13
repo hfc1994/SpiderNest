@@ -7,14 +7,19 @@ import org.apache.http.client.config.RequestConfig;
  */
 public class Constant {
 
-    public final static RequestConfig defaultHttpConfig = RequestConfig.custom()
+    public final static RequestConfig DEFAULT_HTTP_CONFIG = RequestConfig.custom()
             .setConnectTimeout(5000)
             .setSocketTimeout(5000)
             .build();
 
-    public final static long randomSeed = 56871274128l;
+    // 随机数种子
+    public final static long RANDOM_SEED = 56871274128l;
+
+    // 当需要的时间获取不到时所使用的默认时间
+    public final static String DEFAULT_DATE_TIME = "1970-01-01 00:00:00";
+
     // 用户代理头
-    public final static String[] userAgentArray = new String[] {
+    public final static String[] USER_AGENT_ARRAY = new String[] {
             "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36",
             "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36",
             "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2623.110 Safari/537.36",
