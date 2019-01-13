@@ -82,4 +82,10 @@ public class Topic {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
+    @Override
+    public String toString() {
+        return "在" + getModifyTime() + "的时候，有人顶了[" + getAuthorName() + "]（id=" + getAuthorId()
+                + "）的帖子，这个帖子是《" + getTitle() + "》（" + getUrl() + "），回复总数是" + getReplyCount();
+    }
 }

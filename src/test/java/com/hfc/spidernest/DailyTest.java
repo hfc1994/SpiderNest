@@ -2,6 +2,7 @@ package com.hfc.spidernest;
 
 import com.hfc.spidernest.entity.douban.Topic;
 import com.hfc.spidernest.utils.HttpClientUtil;
+import com.hfc.spidernest.utils.decoder.douban.TopicDecoder;
 import com.hfc.spidernest.utils.exception.NotSuitableClassException;
 import com.hfc.spidernest.utils.httpclients.DoubanClient;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +29,12 @@ import java.util.regex.Pattern;
 public class DailyTest {
 
     public static void main(String... args) {
+//        String url = "https://www.douban.com/people/174837097/";
+//        Pattern userIdPattern = Pattern.compile("^(.*)(people/)([^/]*)(/)?$");
+//        Matcher m = userIdPattern.matcher(url);
+//        System.out.println(m.find());
+//        System.out.println(m.group(3));
+
 //        try {
 //            normalTest();
 //        } catch (Exception e) {
@@ -34,8 +42,8 @@ public class DailyTest {
 //            System.out.println("-------");
 //            e.printStackTrace();
 //        }
-        patternTest();
-//        doubanTopicSpider();
+//        patternTest();
+        doubanTopicSpider();
     }
 
     public static void normalTest() throws Exception {
@@ -76,56 +84,16 @@ public class DailyTest {
         String url = "https://www.douban.com/group/hangzhou/discussion?start=0";
         String document = HttpClientUtil.doGet(client, url);
 
-//        System.out.println(document);
+        TopicDecoder decoder = new TopicDecoder();
         if (null != document) {
             Document doc = Jsoup.parse(document, "utf-8");
 
-            Element tbody = doc.select(".article .olt tbody").get(0);
-            Elements elements = tbody.children();
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            for (Element e1 : elements) {
-                if (e1.classNames().contains("th")) {
-                    continue;
-                }
-                Elements content = e1.children();
-                Topic topic = new Topic();
-                for (Element e2 : content) {
-                    // 没有class，返回的是""，居然不是null...
-                    String strClass = e2.attr("class");
+            List<Topic> list = decoder.decode(doc);
 
-                    switch (strClass) {
-                        case "":
-                            if (e2.attributes().size() == 1) {
-                                topic.setAuthorId(e2.child(0).attr("href"));
-                                topic.setAuthorName(e2.child(0).text());
-                            } else {
-                                topic.setReplyCount("".equals(e2.text()) ? 0 : Integer.parseInt(e2.text()));
-                            }
-                            break;
-                        case "title":
-                            topic.setUrl(e2.child(0).attr("href"));
-                            topic.setTitle(e2.child(0).text());
-                            break;
-                        case "time":
-                            String lastReplyTime = e2.text();
-                            if (lastReplyTime.indexOf("-") == 2) {
-                                lastReplyTime = "2019-" + lastReplyTime + ":00";
-                                LocalDateTime ldt = LocalDateTime.from(dtf.parse(lastReplyTime));
-                                topic.setModifyTime(ldt);
-                            }
-                            break;
-                    }
-                }
-                StringBuilder sb = new StringBuilder("在");
-                sb.append(topic.getModifyTime()).append("的时候，有人给").append(topic.getAuthorName())
-                        .append("(").append(topic.getAuthorId()).append(")顶了一下贴，帖子叫")
-                        .append(topic.getTitle()).append("(").append(topic.getUrl()).append("),")
-                        .append("此时的总回复数是").append(topic.getReplyCount()).append("。");
-                System.out.println("-----------");
-                System.out.println(sb.toString());
-                System.out.println("-----------");
+            for (Topic t : list) {
+                System.out.println("------");
+                System.out.println(t);
             }
-            System.out.println("帖子总数是" + elements.size());
         }
     }
 }
