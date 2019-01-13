@@ -8,20 +8,22 @@
     <result column="author_id" jdbcType="VARCHAR" property="authorId" />
     <result column="author_name" jdbcType="VARCHAR" property="authorName" />
     <result column="reply_count" jdbcType="INTEGER" property="replyCount" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from topic
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hfc.spidernest.entity.douban.Topic">
-    insert into topic (id, title, url, 
-      author_id, author_name, reply_count, 
-      modify_time, create_time)
-    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{authorId,jdbcType=VARCHAR}, #{authorName,jdbcType=VARCHAR}, #{replyCount,jdbcType=INTEGER}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hfc.spidernest.entity.douban.Topic" useGeneratedKeys="true">
+    insert into topic (title, url, author_id, 
+      author_name, reply_count, modify_time, 
+      create_time
+      )
+    values (#{title,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{authorId,jdbcType=VARCHAR}, 
+      #{authorName,jdbcType=VARCHAR}, #{replyCount,jdbcType=INTEGER}, #{modifyTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}, 
+      #{createTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}
+      )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.hfc.spidernest.entity.douban.Topic">
     update topic
@@ -30,8 +32,8 @@
       author_id = #{authorId,jdbcType=VARCHAR},
       author_name = #{authorName,jdbcType=VARCHAR},
       reply_count = #{replyCount,jdbcType=INTEGER},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler},
+      create_time = #{createTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -41,48 +43,6 @@
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select id, title, url, author_id, author_name, reply_count, modify_time, create_time
-    from topic
-  </select>
-  <resultMap id="BaseResultMap" type="com.hfc.spidernest.entity.douban.Topic">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
-    <result column="author_id" jdbcType="VARCHAR" property="authorId" />
-    <result column="author_name" jdbcType="VARCHAR" property="authorName" />
-    <result column="reply_count" jdbcType="INTEGER" property="replyCount" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from topic
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.hfc.spidernest.entity.douban.Topic">
-    insert into topic (id, name, url, 
-      author_id, author_name, reply_count, 
-      modify_time, create_time)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{authorId,jdbcType=VARCHAR}, #{authorName,jdbcType=VARCHAR}, #{replyCount,jdbcType=INTEGER}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.hfc.spidernest.entity.douban.Topic">
-    update topic
-    set name = #{name,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      author_id = #{authorId,jdbcType=VARCHAR},
-      author_name = #{authorName,jdbcType=VARCHAR},
-      reply_count = #{replyCount,jdbcType=INTEGER},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, name, url, author_id, author_name, reply_count, modify_time, create_time
-    from topic
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select id, name, url, author_id, author_name, reply_count, modify_time, create_time
     from topic
   </select>
 </mapper>

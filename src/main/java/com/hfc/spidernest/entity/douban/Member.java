@@ -1,6 +1,7 @@
 package com.hfc.spidernest.entity.douban;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Member {
     private Integer id;
@@ -11,7 +12,7 @@ public class Member {
 
     private String signature;
 
-    private Date joinDate;
+    private LocalDate joinDate;
 
     private String place;
 
@@ -41,7 +42,7 @@ public class Member {
 
     private Integer readed;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private String intro;
 
@@ -77,11 +78,11 @@ public class Member {
         this.signature = signature == null ? null : signature.trim();
     }
 
-    public Date getJoinDate() {
+    public LocalDate getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(LocalDate joinDate) {
         this.joinDate = joinDate;
     }
 
@@ -197,11 +198,11 @@ public class Member {
         this.readed = readed;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 

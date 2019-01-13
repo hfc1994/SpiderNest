@@ -1,6 +1,6 @@
 package com.hfc.spidernest.entity.douban;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Reply {
     private Integer id;
@@ -17,9 +17,9 @@ public class Reply {
 
     private Integer likes;
 
-    private Date replyTime;
+    private LocalDateTime replyTime;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private String replyText;
 
@@ -79,19 +79,19 @@ public class Reply {
         this.likes = likes;
     }
 
-    public Date getReplyTime() {
+    public LocalDateTime getReplyTime() {
         return replyTime;
     }
 
-    public void setReplyTime(Date replyTime) {
+    public void setReplyTime(LocalDateTime replyTime) {
         this.replyTime = replyTime;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 

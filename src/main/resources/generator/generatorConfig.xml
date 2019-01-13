@@ -17,6 +17,13 @@
                         userId="${jdbc.user}"
                         password="${jdbc.password}" />
 
+        <!-- 只有一个属于forceBigDecimals，默认false。 如果字段精确超过0，生成BigDecimal 如果字段精确是0，总长度10-18生成Long;如果字段精确是0，
+            总长5-9生成Integer; 如果字段精确是0，总长小于5生成Short; 如果forceBigDecimals为true,统一生成BigDecimal -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
         <!--生成Model.java文件 -->
         <javaModelGenerator targetPackage="${targetModelPackage}"
                             targetProject="${targetJavaProject}">
@@ -31,6 +38,7 @@
                          targetProject="${targetResourcesProject}">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false" />
+            <property name="mergeable" value="false" /><!-- 该配置不生效 -->
         </sqlMapGenerator>
 
         <!-- 生成Mapper.java文件，即dao层 -->
@@ -45,16 +53,37 @@
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+            <columnOverride column="join_date" property="joinDate"
+                            typeHandler="org.apache.ibatis.type.LocalDateTypeHandler"
+                            jdbcType="DATE" javaType="java.time.LocalDate"/>
+            <columnOverride column="create_time" property="createTime"
+                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
+                            jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         </table>
         <table tableName="reply" domainObjectName="Reply"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+            <columnOverride column="reply_time" property="replyTime"
+                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
+                            jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+            <columnOverride column="create_time" property="createTime"
+                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
+                            jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         </table>
         <table tableName="topic" domainObjectName="Topic"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+            <columnOverride column="modify_time" property="modifyTime"
+                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
+                            jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
+            <columnOverride column="create_time" property="createTime"
+                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
+                            jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         </table>
     </context>
 </generatorConfiguration>

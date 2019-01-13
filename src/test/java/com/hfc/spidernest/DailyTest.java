@@ -50,7 +50,7 @@ public class DailyTest {
 
             Element tbody = doc.select(".article .olt tbody").get(0);
             Elements elements = tbody.children();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             for (Element e1 : elements) {
                 if (e1.classNames().contains("th")) {
                     continue;
@@ -78,12 +78,8 @@ public class DailyTest {
                             String lastReplyTime = e2.text();
                             if (lastReplyTime.indexOf("-") == 2) {
                                 lastReplyTime = "2019-" + lastReplyTime + ":00";
-                                try {
-                                    Date d = sdf.parse(lastReplyTime);
-                                    topic.setModifyTime(d);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+                                LocalDateTime ldt = LocalDateTime.from(dtf.parse(lastReplyTime));
+                                topic.setModifyTime(ldt);
                             }
                             break;
                     }

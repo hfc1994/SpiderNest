@@ -1,6 +1,6 @@
 package com.hfc.spidernest.entity.douban;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Topic {
     private Integer id;
@@ -15,9 +15,9 @@ public class Topic {
 
     private Integer replyCount;
 
-    private Date modifyTime;
+    private LocalDateTime modifyTime;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
     public Integer getId() {
         return id;
@@ -67,19 +67,19 @@ public class Topic {
         this.replyCount = replyCount;
     }
 
-    public Date getModifyTime() {
+    public LocalDateTime getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Date modifyTime) {
+    public void setModifyTime(LocalDateTime modifyTime) {
         this.modifyTime = modifyTime;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 }
