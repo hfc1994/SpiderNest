@@ -1,8 +1,16 @@
 package com.hfc.spidernest.entity.douban;
 
+import com.hfc.spidernest.utils.StringUtil;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * 豆瓣小组的用户bean
+ *
+ * 对可能出现emoji表情的字段增加了进行utf-8编码的getter/setter
+ * 普通的getter/setter用于读写数据库时被mybatis调用
+ */
 public class Member {
     private Integer id;
 
@@ -66,16 +74,32 @@ public class Member {
         return nickname;
     }
 
+    public String getNicknameFromUtf8() {
+        return StringUtil.decodeFromUtf8(nickname);
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname == null ? null : nickname.trim();
+    }
+
+    public void setNicknameToUtf8(String nickname) {
+        this.nickname = nickname == null ? null : StringUtil.encodeToUtf8(nickname.trim());
     }
 
     public String getSignature() {
         return signature;
     }
 
+    public String getSignatureFromUtf8() {
+        return StringUtil.decodeFromUtf8(signature);
+    }
+
     public void setSignature(String signature) {
         this.signature = signature == null ? null : signature.trim();
+    }
+
+    public void setSignatureToUtf8(String signature) {
+        this.signature = signature == null ? null : StringUtil.encodeToUtf8(signature.trim());
     }
 
     public LocalDate getJoinDate() {
@@ -210,7 +234,21 @@ public class Member {
         return intro;
     }
 
+    public String getIntroFromUtf8() {
+        return StringUtil.decodeFromUtf8(intro);
+    }
+
     public void setIntro(String intro) {
         this.intro = intro == null ? null : intro.trim();
+    }
+
+    public void setIntroToUtf8(String intro) {
+        this.intro = intro == null ? null : StringUtil.encodeToUtf8(intro.trim());
+    }
+
+    @Override
+    public String toString() {
+        return getNickname() + "（" + getUserId() + "）关注了" + getFollow() + "个人，被" + getFollower() + "个人"
+                + "看过" + getWatched() + "部影视，想看" + getWishWatch() + "部影视，正在看" + getWatching() + "部影视";
     }
 }

@@ -1,7 +1,15 @@
 package com.hfc.spidernest.entity.douban;
 
+import com.hfc.spidernest.utils.StringUtil;
+
 import java.time.LocalDateTime;
 
+/**
+ * 豆瓣小组的主题bean
+ *
+ * 对可能出现emoji表情的字段增加了进行utf-8编码的getter/setter
+ * 普通的getter/setter用于读写数据库时被mybatis调用
+ */
 public class Topic {
     private Integer id;
 
@@ -31,9 +39,18 @@ public class Topic {
         return title;
     }
 
+    public String getTitleFromUtf8() {
+        return StringUtil.decodeFromUtf8(title);
+    }
+
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
     }
+
+    public void setTitleToUtf8(String title) {
+        this.title = title == null ? null : StringUtil.encodeToUtf8(title.trim());
+    }
+
 
     public String getUrl() {
         return url;
@@ -55,8 +72,16 @@ public class Topic {
         return authorName;
     }
 
+    public String getAuthorNameFromUtf8() {
+        return StringUtil.decodeFromUtf8(authorName);
+    }
+
     public void setAuthorName(String authorName) {
         this.authorName = authorName == null ? null : authorName.trim();
+    }
+
+    public void setAuthorNameToUtf8(String authorName) {
+        this.authorName = authorName == null ? null : StringUtil.encodeToUtf8(authorName.trim());
     }
 
     public Integer getReplyCount() {
@@ -85,7 +110,7 @@ public class Topic {
 
     @Override
     public String toString() {
-        return "在" + getModifyTime() + "的时候，有人顶了[" + getAuthorName() + "]（id=" + getAuthorId()
-                + "）的帖子，这个帖子是《" + getTitle() + "》（" + getUrl() + "），回复总数是" + getReplyCount();
+        return "在" + getModifyTime() + "的时候，有人顶了[" + getAuthorNameFromUtf8() + "]（id=" + getAuthorId()
+                + "）的帖子，这个帖子是《" + getTitleFromUtf8() + "》（" + getUrl() + "），回复总数是" + getReplyCount();
     }
 }

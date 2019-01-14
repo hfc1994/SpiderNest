@@ -1,12 +1,9 @@
 package com.hfc.spidernest;
 
-import com.hfc.spidernest.utils.HttpClientUtil;
-import org.apache.http.Header;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * Created by user-hfc on 2019/1/7.
