@@ -9,7 +9,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,7 +19,6 @@ import java.util.regex.Pattern;
  */
 public class TopicDecoder implements HtmlDecoder<Topic> {
 
-    private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private Pattern timePattern = Pattern.compile("^[0-9]{2}-[0-9]{2}\\s[0-9]{2}:[0-9]{2}$");
     private Pattern datePattern = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
     // 用户唯一ID可能是数字也可能是字符串
@@ -71,7 +69,7 @@ public class TopicDecoder implements HtmlDecoder<Topic> {
                             } else {
                                 lastReplyTime = Constant.DEFAULT_DATE_TIME;
                             }
-                            topic.setModifyTime(LocalDateTime.parse(lastReplyTime, dtf));
+                            topic.setModifyTime(LocalDateTime.parse(lastReplyTime, Constant.DEFAULT_DATE_TIME_FORMATTER));
                             break;
                         default:
                     }

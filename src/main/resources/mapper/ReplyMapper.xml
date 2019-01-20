@@ -7,11 +7,13 @@
     <result column="replier_id" jdbcType="VARCHAR" property="replierId" />
     <result column="replier_name" jdbcType="VARCHAR" property="replierName" />
     <result column="reply_src" jdbcType="BIT" property="replySrc" />
+    <result column="quoted_name" jdbcType="VARCHAR" property="quotedName" />
     <result column="topicer" jdbcType="BIT" property="topicer" />
     <result column="likes" jdbcType="INTEGER" property="likes" />
     <result column="reply_time" jdbcType="TIMESTAMP" property="replyTime" typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler" />
     <result column="reply_text" jdbcType="LONGVARCHAR" property="replyText" />
+    <result column="quote_text" jdbcType="LONGVARCHAR" property="quoteText" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from reply
@@ -19,13 +21,15 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hfc.spidernest.entity.douban.Reply" useGeneratedKeys="true">
     insert into reply (topic_url, replier_id, replier_name, 
-      reply_src, topicer, likes, reply_time, 
+      reply_src, quoted_name, topicer, 
+      likes, reply_time, 
       create_time, 
-      reply_text)
+      reply_text, quote_text)
     values (#{topicUrl,jdbcType=VARCHAR}, #{replierId,jdbcType=VARCHAR}, #{replierName,jdbcType=VARCHAR}, 
-      #{replySrc,jdbcType=BIT}, #{topicer,jdbcType=BIT}, #{likes,jdbcType=INTEGER}, #{replyTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}, 
+      #{replySrc,jdbcType=BIT}, #{quotedName,jdbcType=VARCHAR}, #{topicer,jdbcType=BIT}, 
+      #{likes,jdbcType=INTEGER}, #{replyTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}, 
       #{createTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}, 
-      #{replyText,jdbcType=LONGVARCHAR})
+      #{replyText,jdbcType=LONGVARCHAR}, #{quoteText,jdbcType=LONGVARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.hfc.spidernest.entity.douban.Reply">
     update reply
@@ -33,22 +37,24 @@
       replier_id = #{replierId,jdbcType=VARCHAR},
       replier_name = #{replierName,jdbcType=VARCHAR},
       reply_src = #{replySrc,jdbcType=BIT},
+      quoted_name = #{quotedName,jdbcType=VARCHAR},
       topicer = #{topicer,jdbcType=BIT},
       likes = #{likes,jdbcType=INTEGER},
       reply_time = #{replyTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler},
       create_time = #{createTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler},
-      reply_text = #{replyText,jdbcType=LONGVARCHAR}
+      reply_text = #{replyText,jdbcType=LONGVARCHAR},
+      quote_text = #{quoteText,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, topic_url, replier_id, replier_name, reply_src, topicer, likes, reply_time, 
-    create_time, reply_text
+    select id, topic_url, replier_id, replier_name, reply_src, quoted_name, topicer, 
+    likes, reply_time, create_time, reply_text, quote_text
     from reply
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, topic_url, replier_id, replier_name, reply_src, topicer, likes, reply_time, 
-    create_time, reply_text
+    select id, topic_url, replier_id, replier_name, reply_src, quoted_name, topicer, 
+    likes, reply_time, create_time, reply_text, quote_text
     from reply
   </select>
 </mapper>

@@ -2,6 +2,8 @@ package com.hfc.spidernest.utils;
 
 import org.apache.http.client.config.RequestConfig;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * Created by user-hfc on 2019/1/8.
  */
@@ -17,6 +19,9 @@ public class Constant {
 
     // 当需要的时间获取不到时所使用的默认时间
     public final static String DEFAULT_DATE_TIME = "1970-01-01 00:00:00";
+
+    // 默认的时间格式
+    public final static DateTimeFormatter DEFAULT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     // 用户代理头
     public final static String[] USER_AGENT_ARRAY = new String[] {

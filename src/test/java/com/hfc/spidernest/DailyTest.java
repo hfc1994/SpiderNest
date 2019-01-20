@@ -1,7 +1,9 @@
 package com.hfc.spidernest;
 
+import com.hfc.spidernest.entity.douban.Reply;
 import com.hfc.spidernest.entity.douban.Topic;
 import com.hfc.spidernest.utils.HttpClientUtil;
+import com.hfc.spidernest.utils.decoder.douban.ReplyDecoder;
 import com.hfc.spidernest.utils.decoder.douban.TopicDecoder;
 import com.hfc.spidernest.utils.exception.NotSuitableClassException;
 import com.hfc.spidernest.utils.httpclients.DoubanClient;
@@ -34,7 +36,8 @@ public class DailyTest {
 //            e.printStackTrace();
 //        }
 //        patternTest();
-        doubanTopicSpider();
+//        doubanTopicSpider();
+        doubanReplySpider();
     }
 
     public static void normalTest() throws Exception {
@@ -82,6 +85,27 @@ public class DailyTest {
             List<Topic> list = decoder.decode(doc);
 
             for (Topic t : list) {
+                System.out.println("------");
+                System.out.println(t);
+            }
+        }
+    }
+
+    // 豆瓣话题页面的爬虫测试
+    public static void doubanReplySpider() {
+        DoubanClient doubanClient = new DoubanClient();
+        CloseableHttpClient client = doubanClient.getClient();
+
+        String url = "https://www.douban.com/group/topic/131344244/?start=0";
+        String document = HttpClientUtil.doGet(client, url);
+
+        ReplyDecoder replyDecoder = new ReplyDecoder();
+        if (null != document) {
+            Document doc = Jsoup.parse(document, "utf-8");
+
+            List<Reply> list = replyDecoder.decode(doc);
+
+            for (Reply t : list) {
                 System.out.println("------");
                 System.out.println(t);
             }

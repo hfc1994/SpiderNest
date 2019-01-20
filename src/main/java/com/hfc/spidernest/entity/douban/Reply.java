@@ -21,6 +21,8 @@ public class Reply {
 
     private Boolean replySrc;
 
+    private String quotedName;  // 被引用的回复者昵称
+
     private Boolean topicer;    // 是否是楼主
 
     private Integer likes;
@@ -30,6 +32,8 @@ public class Reply {
     private LocalDateTime createTime;
 
     private String replyText;
+
+    private String quoteText;
 
     public Integer getId() {
         return id;
@@ -79,6 +83,22 @@ public class Reply {
         this.replySrc = replySrc;
     }
 
+    public String getQuotedName() {
+        return quotedName;
+    }
+
+    public String getQuotedNameFromUtf8() {
+        return StringUtil.decodeFromUtf8(quotedName);
+    }
+
+    public void setQuotedName(String quotedName) {
+        this.quotedName = quotedName == null ? null : quotedName.trim();
+    }
+
+    public void setQuotedNameToUtf8(String quotedName) {
+        this.quotedName = quotedName == null ? null : StringUtil.encodeToUtf8(quotedName.trim());
+    }
+
     public Boolean getTopicer() {
         return topicer;
     }
@@ -125,6 +145,22 @@ public class Reply {
 
     public void setReplyTextToUtf8(String replyText) {
         this.replyText = replyText == null ? null : StringUtil.encodeToUtf8(replyText.trim());
+    }
+
+    public String getQuoteText() {
+        return quoteText;
+    }
+
+    public String getQuoteTextFromUtf8() {
+        return StringUtil.decodeFromUtf8(quoteText);
+    }
+
+    public void setQuoteText(String quoteText) {
+        this.quoteText = quoteText == null ? null : quoteText.trim();
+    }
+
+    public void setQuoteTextToUtf8(String quoteText) {
+        this.quoteText = quoteText == null ? null : StringUtil.encodeToUtf8(quoteText.trim());
     }
 
     @Override
