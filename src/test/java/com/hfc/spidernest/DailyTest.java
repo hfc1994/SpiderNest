@@ -80,7 +80,7 @@ public class DailyTest {
 
         TopicDecoder decoder = new TopicDecoder();
         if (null != document) {
-            Document doc = Jsoup.parse(document, "utf-8");
+            Document doc = Jsoup.parse(document);
 
             List<Topic> list = decoder.decodeAllNode(doc);
 
@@ -101,7 +101,7 @@ public class DailyTest {
 
         ReplyDecoder replyDecoder = new ReplyDecoder();
         if (null != document) {
-            Document doc = Jsoup.parse(document, "utf-8");
+            Document doc = Jsoup.parse(document);
 
             List<Reply> list = replyDecoder.decodeAllNode(doc);
 
