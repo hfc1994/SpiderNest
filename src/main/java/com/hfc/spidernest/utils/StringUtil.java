@@ -44,4 +44,11 @@ public class StringUtil {
         }
         return newStr;
     }
+
+    /**
+     * @return 返回一个空字符串
+     */
+    public static String blank() {
+        return "";
+    }
 }

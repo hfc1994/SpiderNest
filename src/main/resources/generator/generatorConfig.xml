@@ -49,18 +49,18 @@
         </javaClientGenerator>
 
         <!-- 待生成的数据库中的表名，生成一个表对应的Java和xml文件就需要配置一段 -->
-        <table tableName="member" domainObjectName="Member"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
-            <columnOverride column="join_date" property="joinDate"
-                            typeHandler="org.apache.ibatis.type.LocalDateTypeHandler"
-                            jdbcType="DATE" javaType="java.time.LocalDate"/>
-            <columnOverride column="create_time" property="createTime"
-                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
-                            jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
-        </table>
+        <!--<table tableName="member" domainObjectName="Member"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+            <!--<generatedKey column="id" sqlStatement="JDBC" identity="true"/>-->
+            <!--<columnOverride column="join_date" property="joinDate"-->
+                            <!--typeHandler="org.apache.ibatis.type.LocalDateTypeHandler"-->
+                            <!--jdbcType="DATE" javaType="java.time.LocalDate"/>-->
+            <!--<columnOverride column="create_time" property="createTime"-->
+                            <!--typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"-->
+                            <!--jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>-->
+        <!--</table>-->
         <table tableName="reply" domainObjectName="Reply"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
@@ -73,17 +73,17 @@
                             typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
                             jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         </table>
-        <table tableName="topic" domainObjectName="Topic"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
-            <columnOverride column="modify_time" property="modifyTime"
-                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
-                            jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
-            <columnOverride column="create_time" property="createTime"
-                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
-                            jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
-        </table>
+        <!--<table tableName="topic" domainObjectName="Topic"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false"-->
+               <!--selectByExampleQueryId="false">-->
+            <!--<generatedKey column="id" sqlStatement="JDBC" identity="true"/>-->
+            <!--<columnOverride column="modify_time" property="modifyTime"-->
+                            <!--typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"-->
+                            <!--jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>-->
+            <!--<columnOverride column="create_time" property="createTime"-->
+                            <!--typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler"-->
+                            <!--jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>

@@ -3,6 +3,7 @@ package com.hfc.spidernest.utils;
 import org.apache.http.client.config.RequestConfig;
 
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 /**
  * Created by user-hfc on 2019/1/8.
@@ -15,13 +16,22 @@ public class Constant {
             .build();
 
     // 随机数种子
-    public final static long RANDOM_SEED = 56871274128l;
+    public final static long RANDOM_SEED = 56871274128L;
 
     // 当需要的时间获取不到时所使用的默认时间
     public final static String DEFAULT_DATE_TIME = "1970-01-01 00:00:00";
 
     // 默认的时间格式
     public final static DateTimeFormatter DEFAULT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    // 时间格式的正则表达式，对应的格式类似于12-12 12:12
+    public final static Pattern TIME_REGEX = Pattern.compile("^[0-9]{2}-[0-9]{2}\\s[0-9]{2}:[0-9]{2}$");
+    // 日期格式的正则表达式，对应的格式类似于2018-12-12
+    public final static Pattern DATE_REGEX = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
+    // 用户id的正则表达式，用户唯一ID可能是数字也可能是字符串，类似https://www.douban.com/people/666/
+    public final static Pattern USER_URL_REGEX = Pattern.compile("^(.*)(people/)([^/]*)(/)?$");
+    // 主题帖的正则表达式，类似https://www.douban.com/group/topic/666/
+    public final static Pattern TOPIC_URL_REGEX = Pattern.compile("^(.*)(topic/)([^/]*)(/)?$");
 
     // 用户代理头
     public final static String[] USER_AGENT_ARRAY = new String[] {

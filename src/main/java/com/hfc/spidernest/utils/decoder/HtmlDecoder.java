@@ -7,5 +7,7 @@ import java.util.List;
  */
 public interface HtmlDecoder<T> {
 
-    List<T> decode(Object object);
+    List<T> decodeAllNode(Object object);
+
+    T decodeNode(Object object);
 }

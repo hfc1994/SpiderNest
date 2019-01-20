@@ -4,16 +4,10 @@ import com.hfc.spidernest.utils.StringUtil;
 
 import java.time.LocalDateTime;
 
-/**
- * 豆瓣小组的主题里面的单条回复bean
- *
- * 对可能出现emoji表情的字段增加了进行utf-8编码的getter/setter
- * 普通的getter/setter用于读写数据库时被mybatis调用
- */
 public class Reply {
     private Integer id;
 
-    private String topicUrl;
+    private String topicId;
 
     private String replierId;
 
@@ -21,7 +15,7 @@ public class Reply {
 
     private Boolean replySrc;
 
-    private String quotedName;  // 被引用的回复者昵称
+    private String quoteUserid; // 被引用的回复者昵称
 
     private Boolean topicer;    // 是否是楼主
 
@@ -43,12 +37,12 @@ public class Reply {
         this.id = id;
     }
 
-    public String getTopicUrl() {
-        return topicUrl;
+    public String getTopicId() {
+        return topicId;
     }
 
-    public void setTopicUrl(String topicUrl) {
-        this.topicUrl = topicUrl == null ? null : topicUrl.trim();
+    public void setTopicId(String topicId) {
+        this.topicId = topicId == null ? null : topicId.trim();
     }
 
     public String getReplierId() {
@@ -83,20 +77,12 @@ public class Reply {
         this.replySrc = replySrc;
     }
 
-    public String getQuotedName() {
-        return quotedName;
+    public String getQuoteUserid() {
+        return quoteUserid;
     }
 
-    public String getQuotedNameFromUtf8() {
-        return StringUtil.decodeFromUtf8(quotedName);
-    }
-
-    public void setQuotedName(String quotedName) {
-        this.quotedName = quotedName == null ? null : quotedName.trim();
-    }
-
-    public void setQuotedNameToUtf8(String quotedName) {
-        this.quotedName = quotedName == null ? null : StringUtil.encodeToUtf8(quotedName.trim());
+    public void setQuoteUserid(String quoteUserid) {
+        this.quoteUserid = quoteUserid == null ? null : quoteUserid.trim();
     }
 
     public Boolean getTopicer() {

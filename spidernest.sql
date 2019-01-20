@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50709
 File Encoding         : 65001
 
-Date: 2019-01-12 17:46:02
+Date: 2019-01-20 17:24:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,11 +56,13 @@ CREATE TABLE `member` (
 DROP TABLE IF EXISTS `reply`;
 CREATE TABLE `reply` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `topic_url` varchar(64) NOT NULL COMMENT '帖子链接',
+  `topic_id` varchar(32) NOT NULL COMMENT '帖子的id',
   `replier_id` varchar(32) DEFAULT NULL COMMENT '回复者id',
   `replier_name` varchar(16) NOT NULL COMMENT '回复者昵称',
   `reply_src` tinyint(1) DEFAULT '0' COMMENT '回应来源，0为网页，1为app',
   `reply_text` text COMMENT '回复的内容',
+  `quote_text` text COMMENT '引用的内容',
+  `quoted_name` varchar(16) DEFAULT NULL COMMENT '被引用者的昵称',
   `topicer` tinyint(1) DEFAULT '0' COMMENT '是否为楼主，0为不是，1为是',
   `likes` mediumint(8) unsigned DEFAULT '0' COMMENT '赞数',
   `reply_time` datetime DEFAULT NULL COMMENT '回复时间',
@@ -90,4 +92,4 @@ CREATE TABLE `topic` (
   KEY `author_id` (`author_id`) USING BTREE,
   KEY `author_name` (`author_name`) USING BTREE,
   KEY `reply_count` (`reply_count`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
