@@ -5,12 +5,10 @@ import com.hfc.spidernest.utils.Constant;
 import com.hfc.spidernest.utils.decoder.HtmlDecoder;
 import com.hfc.spidernest.utils.exception.NotSuitableClassException;
 import com.hfc.spidernest.utils.httpclients.ExtractUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -116,14 +114,19 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
         Element firstReply = doc.selectFirst(".topic-content .topic-doc");
         Element author = firstReply.selectFirst(".from a");
         String authorName = author.text();
+        // 回复者昵称
         reply.setReplierNameToUtf8(authorName);
         String authorId = ExtractUtil.extractUserId(author.attr("href"));
+        // 回复者id
         reply.setReplierId(authorId);
         String replyTime = firstReply.selectFirst(".color-green").text();
+        // 回复时间
         reply.setReplyTime(LocalDateTime.parse(replyTime, Constant.DEFAULT_DATE_TIME_FORMATTER));
-        // @todo replyContent里面需要处理图片问题
-        String replyContent = firstReply.selectFirst("#link-report .topic-richtext").text().trim();
+        Element richtext = firstReply.selectFirst("#link-report .topic-richtext");
+        // 回复的内容
+        reply.setReplyText(buildReplyContent(richtext));
         Elements vias = firstReply.select("#link-report_group .via");
+        // 回复来源
         reply.setReplySrc(vias.size() != 0);
 
         // "0"表示是1楼
@@ -131,5 +134,38 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
         // 是楼主
         reply.setTopicer(true);
         return reply;
+    }
+
+    /**
+     * 提取1楼这个回复的具体内容
+     * 1楼回复是一个富文本，不清楚会有哪些情况，所以此处仅做简单处理
+     * @param richtext 1楼的富文本节点
+     * @return 从1楼提取到的内容
+     */
+    private String buildReplyContent(Element richtext) {
+        StringBuilder sb = new StringBuilder();
+        Elements contentList = richtext.children();
+        for (Element content : contentList) {
+            if ("p".equalsIgnoreCase(content.tagName())) {
+                if (StringUtils.isNotBlank(content.text())) {
+                    sb.append(content.text().trim());
+                }
+            } else if ("h2".equalsIgnoreCase(content.tagName())) {
+                if (StringUtils.isNotBlank(content.text())) {
+                    sb.append("\n").append(content.text().trim()).append("\n");
+                }
+            } else if ("div".equalsIgnoreCase(content.tagName())) {
+                if (content.classNames().contains("image-container")) {
+                    Elements imgs = content.getElementsByTag("img");
+                    for (Element img : imgs) {
+                        sb.append("<img>").append(img.attr("src")).append("</img>");
+                    }
+                } else if (StringUtils.isNotBlank(content.text())) {
+                    sb.append(content.text().trim());
+                }
+            }
+        }
+
+        return sb.toString();
     }
 }

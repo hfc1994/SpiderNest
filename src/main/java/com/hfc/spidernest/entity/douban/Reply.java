@@ -15,7 +15,7 @@ public class Reply {
 
     private Boolean replySrc;
 
-    private String quoteUserid; // 被引用的回复者昵称
+    private String quoteUserid; // 被引用的回复者id
 
     private Boolean topicer;    // 是否是楼主
 
@@ -151,7 +151,13 @@ public class Reply {
 
     @Override
     public String toString() {
-        return "在" + getReplyTime() + "的时候，[" + getReplierNameFromUtf8() + "]（" + getReplierId() + "）"
-                + "回复了一句“" + getReplyTextFromUtf8() + "”，收获点赞数" + getLikes();
+        if (getQuoteText() == null) {
+            return "在" + getReplyTime() + "的时候，[" + getReplierNameFromUtf8() + "]（" + getReplierId() + "）"
+                    + "回复了一句“" + getReplyTextFromUtf8() + "”，收获点赞数" + getLikes();
+        } else {
+            return "在" + getReplyTime() + "的时候，[" + getReplierNameFromUtf8() + "]（" + getReplierId() + "）引用回复“"
+                    + getQuoteTextFromUtf8() + "”并回复了一句“" + getReplyTextFromUtf8() + "”，收获点赞数" + getLikes();
+        }
+
     }
 }

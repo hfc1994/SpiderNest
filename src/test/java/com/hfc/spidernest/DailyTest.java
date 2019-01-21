@@ -97,6 +97,7 @@ public class DailyTest {
         CloseableHttpClient client = doubanClient.getClient();
 
         String url = "https://www.douban.com/group/topic/131344244/?start=0";
+//        String url = "https://www.douban.com/group/topic/131734270/?start=0";   // 有长文
         String document = HttpClientUtil.doGet(client, url);
 
         ReplyDecoder replyDecoder = new ReplyDecoder();
