@@ -1,8 +1,10 @@
 package com.hfc.spidernest;
 
+import com.hfc.spidernest.entity.douban.Member;
 import com.hfc.spidernest.entity.douban.Reply;
 import com.hfc.spidernest.entity.douban.Topic;
 import com.hfc.spidernest.utils.HttpClientUtil;
+import com.hfc.spidernest.utils.decoder.douban.MemberDecoder;
 import com.hfc.spidernest.utils.decoder.douban.ReplyDecoder;
 import com.hfc.spidernest.utils.decoder.douban.TopicDecoder;
 import com.hfc.spidernest.utils.exception.NotSuitableClassException;
@@ -110,6 +112,24 @@ public class DailyTest {
                 System.out.println("------");
                 System.out.println(t);
             }
+        }
+    }
+
+    // 豆瓣成员页面的爬虫测试
+    public static void doubanMemberSpider() {
+        DoubanClient doubanClient = new DoubanClient();
+        CloseableHttpClient client = doubanClient.getClient();
+
+        String url = "https://www.douban.com/people/qijiuzhiyue/";
+        String document = HttpClientUtil.doGet(client, url);
+
+        MemberDecoder memberDecoder = new MemberDecoder();
+        if (null != document) {
+            Document doc = Jsoup.parse(document);
+
+            Member member = memberDecoder.decodeNode(doc);
+
+            System.out.println(member);
         }
     }
 }
