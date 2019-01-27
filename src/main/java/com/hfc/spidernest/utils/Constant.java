@@ -29,9 +29,14 @@ public class Constant {
     // 日期格式的正则表达式，对应的格式类似于2018-12-12
     public final static Pattern DATE_REGEX = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
     // 用户id的正则表达式，用户唯一ID可能是数字也可能是字符串，类似https://www.douban.com/people/666/
-    public final static Pattern USER_URL_REGEX = Pattern.compile("^(.*)(people/)([^/]*)(/)?$");
+    public final static Pattern USER_URL_REGEX = Pattern.compile("(.*)(people/)([^/]*)(/)?");
     // 主题帖的正则表达式，类似https://www.douban.com/group/topic/666/
-    public final static Pattern TOPIC_URL_REGEX = Pattern.compile("^(.*)(topic/)([^/]*)(/)?$");
+    public final static Pattern TOPIC_URL_REGEX = Pattern.compile("(.*)(topic/)([^/]*)(/)?");
+    // 在主题帖的html内获取ul和li内容的正则表达式
+    public final static Pattern REPLY_UL_REGEX = Pattern.compile("(<ul class=\"topic-reply\" id=\"comments\">)([\\s\\S]*?)(</ul>)");
+    public final static Pattern REPLY_LI_REGEX = Pattern.compile("(<li class=\"clearfix comment-item\" id=\")([0-9]*)([\\s\\S]*?)(</li>)");
+    // \u8d5e是“赞”的Unicode
+    public final static Pattern REPLY_LIKE_REGEX = Pattern.compile("([\\u8d5e])(.*)([0-9]+)(\\))");
 
     // 用户代理头
     public final static String[] USER_AGENT_ARRAY = new String[] {

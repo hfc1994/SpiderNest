@@ -9,15 +9,28 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * Created by user-hfc on 2019/1/14.
  */
 public class ReplyDecoder implements HtmlDecoder<Reply> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReplyDecoder.class.getName());
+
+    /**
+     * 存储相关回复下,回复id和对应的赞数
+     * 使用ThreadLocal可以保持线程安全
+     */
+    private ThreadLocal<Map<String, Integer>> likesDataTL = new ThreadLocal<>();
 
     /**
      * 解析全部的回复节点
@@ -31,10 +44,11 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
             List<Reply> replyList = new ArrayList<>(8);
 
             Document doc = (Document) object;
-            Reply firstReply = decodeTopicFirstReply(doc);
-            replyList.add(firstReply);
+            // 主题帖的内容
+            Reply topicContent = decodeTopicContent(doc);
+            replyList.add(topicContent);
             // 楼主的id
-            String lzId = firstReply.getReplierId();
+            String lzId = topicContent.getReplierId();
             Element commentBody = doc.getElementById("comments");
             Elements comments = commentBody.children();
             for (Element comment : comments) {
@@ -67,10 +81,14 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
             Element comment = (Element) object;
             reply = new Reply();
 
+            // 回复的id
+            String replyId = comment.attr("id");
+            reply.setReplyId(replyId);
+
             Element replyDoc = comment.select(".reply-doc").first();
             Element head4 = replyDoc.getElementsByTag("h4").first();
             Element replier = head4.children().first();
-            // 回复者id
+            // 回复者的id
             String replierId = ExtractUtil.extractUserId(replier.attr("href"));
             reply.setReplierId(replierId);
             // 回复者昵称
@@ -96,8 +114,18 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
             }
 
             // 怀疑是jsoup的解析bug，无法获取一个Node下面的多个TextNode，只能获取到第一个
-//            Element likes = replyDoc.select(".operation_div .comment-vote").first();
-//            String strLikes = likes.text();
+            // Element likes = replyDoc.select(".operation_div .comment-vote").first();
+            // String strLikes = likes.text();
+            // 使用extractLikesToMap来弥补这个问题
+            if (null != this.likesDataTL.get()) {
+                Integer likes = this.likesDataTL.get().get(reply.getReplyId());
+                likes = likes == null ? 0 : likes;
+                reply.setLikes(likes);
+            } else {
+                LOGGER.error("please pay attention to [extractLikesToMap] method");
+                reply.setLikes(0);
+            }
+
         } else {
             throw new NotSuitableClassException(Element.class, object);
         }
@@ -105,11 +133,11 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
     }
 
     /**
-     * 解析主题帖中的1楼
+     * 解析主题帖的内容
      * @param doc 整个网页
-     * @return 1楼
+     * @return 主题帖的内容
      */
-    public Reply decodeTopicFirstReply(Document doc) {
+    public Reply decodeTopicContent(Document doc) {
         Reply reply = new Reply();
         Element firstReply = doc.selectFirst(".topic-content .topic-doc");
         Element author = firstReply.selectFirst(".from a");
@@ -133,14 +161,23 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
         reply.setQuoteUserid("0");
         // 是楼主
         reply.setTopicer(true);
+        // 点赞数
+//        Element like = doc.selectFirst(".topic-content .action-react .react-btn");
+//        String strLike = like.text();
+//        if (StringUtils.isNotBlank(strLike)) {
+//            reply.setLikes(Integer.parseInt(strLike));
+//        } else {
+//            reply.setLikes(0);
+//        }
+        reply.setLikes(0);
         return reply;
     }
 
     /**
-     * 提取1楼这个回复的具体内容
-     * 1楼回复是一个富文本，不清楚会有哪些情况，所以此处仅做简单处理
-     * @param richtext 1楼的富文本节点
-     * @return 从1楼提取到的内容
+     * 提取主题帖的具体内容
+     * 主题帖的内容是一个富文本，不清楚会有哪些情况，所以此处仅做简单处理
+     * @param richtext 主题帖内容的富文本节点
+     * @return 主题帖里提取到的内容
      */
     private String buildReplyContent(Element richtext) {
         StringBuilder sb = new StringBuilder();
@@ -167,5 +204,44 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * 由于jsoup存在bug（怀疑），导致赞数的数量解析不到
+     * 因此添加此方法，通过正则匹配相关回复的赞数
+     * @param html 整个html文本
+     */
+    public void extractLikesToMap(String html) {
+        Map<String, Integer> likesData = likesDataTL.get();
+        // 每次调用相当于是解析新的页面了
+        if (null == likesData) {
+            likesData = new HashMap<>(8);
+            likesDataTL.set(likesData);
+        } else {
+            likesData.clear();
+        }
+
+        Matcher ulMatcher = Constant.REPLY_UL_REGEX.matcher(html);
+        if (ulMatcher.find()) {
+            String lis = ulMatcher.group(2);
+            Matcher liMatcher = Constant.REPLY_LI_REGEX.matcher(lis);
+            Matcher likeMatcher = null;
+            String li = null;
+            String replyId = null;
+            while (liMatcher.find()) {
+                li = liMatcher.group(0);
+                replyId = liMatcher.group(2);
+                likeMatcher = Constant.REPLY_LIKE_REGEX.matcher(li);
+                if (likeMatcher.find()) {
+                    likesData.put(replyId, Integer.parseInt(likeMatcher.group(3)));
+                } else {
+                    likesData.put(replyId, 0);
+                    LOGGER.info("no like data found");
+                }
+            }
+            LOGGER.info("the count of li is " + likesData.size());
+        } else {
+            LOGGER.info("no ul block found");
+        }
     }
 }

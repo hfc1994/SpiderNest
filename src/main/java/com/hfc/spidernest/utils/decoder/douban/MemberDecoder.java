@@ -4,6 +4,7 @@ import com.hfc.spidernest.entity.douban.Member;
 import com.hfc.spidernest.utils.decoder.HtmlDecoder;
 import com.hfc.spidernest.utils.exception.NotSuitableClassException;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,13 @@ public class MemberDecoder implements HtmlDecoder<Member> {
      * @throws NotSuitableClassException 传入的类型不合适，需要的是Document
      */
     @Override
-    public Member decodeNode(Object object) throws NotSuitableClassException  {
+    public Member decodeNode(Object object) throws NotSuitableClassException {
         if (object instanceof  Document) {
+            Member member = new Member();
+
             Document doc = (Document) object;
+            Element article = doc.selectFirst("#content .article");
+            Element aside = doc.selectFirst("#content .aside");
 
         } else {
             throw new NotSuitableClassException(Document.class, object);
