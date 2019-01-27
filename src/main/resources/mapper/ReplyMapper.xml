@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.hfc.spidernest.entity.douban.Reply">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="topic_id" jdbcType="VARCHAR" property="topicId" />
+    <result column="reply_id" jdbcType="VARCHAR" property="replyId" />
     <result column="replier_id" jdbcType="VARCHAR" property="replierId" />
     <result column="replier_name" jdbcType="VARCHAR" property="replierName" />
     <result column="reply_src" jdbcType="BIT" property="replySrc" />
@@ -20,20 +21,21 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hfc.spidernest.entity.douban.Reply" useGeneratedKeys="true">
-    insert into reply (topic_id, replier_id, replier_name, 
-      reply_src, quote_userid, topicer, 
-      likes, reply_time, 
+    insert into reply (topic_id, reply_id, replier_id, 
+      replier_name, reply_src, quote_userid, 
+      topicer, likes, reply_time, 
       create_time, 
       reply_text, quote_text)
-    values (#{topicId,jdbcType=VARCHAR}, #{replierId,jdbcType=VARCHAR}, #{replierName,jdbcType=VARCHAR}, 
-      #{replySrc,jdbcType=BIT}, #{quoteUserid,jdbcType=VARCHAR}, #{topicer,jdbcType=BIT}, 
-      #{likes,jdbcType=INTEGER}, #{replyTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}, 
+    values (#{topicId,jdbcType=VARCHAR}, #{replyId,jdbcType=VARCHAR}, #{replierId,jdbcType=VARCHAR}, 
+      #{replierName,jdbcType=VARCHAR}, #{replySrc,jdbcType=BIT}, #{quoteUserid,jdbcType=VARCHAR}, 
+      #{topicer,jdbcType=BIT}, #{likes,jdbcType=INTEGER}, #{replyTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}, 
       #{createTime,jdbcType=TIMESTAMP,typeHandler=org.apache.ibatis.type.LocalDateTimeTypeHandler}, 
       #{replyText,jdbcType=LONGVARCHAR}, #{quoteText,jdbcType=LONGVARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.hfc.spidernest.entity.douban.Reply">
     update reply
     set topic_id = #{topicId,jdbcType=VARCHAR},
+      reply_id = #{replyId,jdbcType=VARCHAR},
       replier_id = #{replierId,jdbcType=VARCHAR},
       replier_name = #{replierName,jdbcType=VARCHAR},
       reply_src = #{replySrc,jdbcType=BIT},
@@ -47,14 +49,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, topic_id, replier_id, replier_name, reply_src, quote_userid, topicer, 
-    likes, reply_time, create_time, reply_text, quote_text
+    select id, topic_id, reply_id, replier_id, replier_name, reply_src, quote_userid, 
+    topicer, likes, reply_time, create_time, reply_text, quote_text
     from reply
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select id, topic_id, replier_id, replier_name, reply_src, quote_userid, topicer, 
-    likes, reply_time, create_time, reply_text, quote_text
+    select id, topic_id, reply_id, replier_id, replier_name, reply_src, quote_userid, 
+    topicer, likes, reply_time, create_time, reply_text, quote_text
     from reply
   </select>
 </mapper>

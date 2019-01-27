@@ -9,6 +9,8 @@ public class Reply {
 
     private String topicId;
 
+    private String replyId;
+
     private String replierId;
 
     private String replierName;
@@ -43,6 +45,14 @@ public class Reply {
 
     public void setTopicId(String topicId) {
         this.topicId = topicId == null ? null : topicId.trim();
+    }
+
+    public String getReplyId() {
+        return replyId;
+    }
+
+    public void setReplyId(String replyId) {
+        this.replyId = replyId == null ? null : replyId.trim();
     }
 
     public String getReplierId() {
