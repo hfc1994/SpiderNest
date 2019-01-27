@@ -113,9 +113,7 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
                 reply.setQuoteUserid(quoteAuthorId);
             }
 
-            // 怀疑是jsoup的解析bug，无法获取一个Node下面的多个TextNode，只能获取到第一个
-            // Element likes = replyDoc.select(".operation_div .comment-vote").first();
-            // String strLikes = likes.text();
+            // 回复的点赞数是页内的js执行之后才会显示的
             // 使用extractLikesToMap来弥补这个问题
             if (null != this.likesDataTL.get()) {
                 Integer likes = this.likesDataTL.get().get(reply.getReplyId());
@@ -162,14 +160,16 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
         // 是楼主
         reply.setTopicer(true);
         // 点赞数
-//        Element like = doc.selectFirst(".topic-content .action-react .react-btn");
-//        String strLike = like.text();
-//        if (StringUtils.isNotBlank(strLike)) {
-//            reply.setLikes(Integer.parseInt(strLike));
-//        } else {
-//            reply.setLikes(0);
-//        }
-        reply.setLikes(0);
+        // 登录之后才会有具体点赞数，否则只有一个“赞”字
+        // @todo---登录后获取赞数
+        Element like = doc.selectFirst(".topic-content .action-react .react-btn");
+        String strLike = like.text();
+        Matcher likeMatcher = Constant.REPLY_LIKE_REGEX.matcher(strLike);
+        if (likeMatcher.find()) {
+            reply.setLikes(Integer.parseInt(likeMatcher.group(3)));
+        } else {
+            reply.setLikes(0);
+        }
         return reply;
     }
 
@@ -207,41 +207,35 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
     }
 
     /**
-     * 由于jsoup存在bug（怀疑），导致赞数的数量解析不到
-     * 因此添加此方法，通过正则匹配相关回复的赞数
+     * 回复的点赞数是由html里面的一段js执行更改html内容生成的
+     * 因此需要识别到这段js，然后提取json数据
+     * @ todo----
      * @param html 整个html文本
      */
     public void extractLikesToMap(String html) {
-        Map<String, Integer> likesData = likesDataTL.get();
+        Map<String, Integer> likesData = this.likesDataTL.get();
         // 每次调用相当于是解析新的页面了
         if (null == likesData) {
             likesData = new HashMap<>(8);
-            likesDataTL.set(likesData);
+            this.likesDataTL.set(likesData);
         } else {
             likesData.clear();
         }
 
-        Matcher ulMatcher = Constant.REPLY_UL_REGEX.matcher(html);
-        if (ulMatcher.find()) {
-            String lis = ulMatcher.group(2);
-            Matcher liMatcher = Constant.REPLY_LI_REGEX.matcher(lis);
-            Matcher likeMatcher = null;
-            String li = null;
+        Matcher jsonMatcher = Constant.LIKES_JSON_REGEX.matcher(html);
+        if (jsonMatcher.find()) {
+            String strJson = jsonMatcher.group(2);
+            Matcher detailMatcher = Constant.LIKES_REGEX.matcher(strJson);
             String replyId = null;
-            while (liMatcher.find()) {
-                li = liMatcher.group(0);
-                replyId = liMatcher.group(2);
-                likeMatcher = Constant.REPLY_LIKE_REGEX.matcher(li);
-                if (likeMatcher.find()) {
-                    likesData.put(replyId, Integer.parseInt(likeMatcher.group(3)));
-                } else {
-                    likesData.put(replyId, 0);
-                    LOGGER.info("no like data found");
-                }
+            Integer likes = null;
+            while (detailMatcher.find()) {
+                replyId = detailMatcher.group(1);
+                likes = Integer.parseInt(detailMatcher.group(3));
+                likesData.put(replyId, likes);
             }
-            LOGGER.info("the count of li is " + likesData.size());
+            LOGGER.info("the count of reply is " + likesData.size());
         } else {
-            LOGGER.info("no ul block found");
+            LOGGER.info("no json data found");
         }
     }
 }

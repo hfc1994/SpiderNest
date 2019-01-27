@@ -35,6 +35,8 @@ public class Constant {
     // 在主题帖的html内获取ul和li内容的正则表达式
     public final static Pattern REPLY_UL_REGEX = Pattern.compile("(<ul class=\"topic-reply\" id=\"comments\">)([\\s\\S]*?)(</ul>)");
     public final static Pattern REPLY_LI_REGEX = Pattern.compile("(<li class=\"clearfix comment-item\" id=\")([0-9]*)([\\s\\S]*?)(</li>)");
+    public final static Pattern LIKES_JSON_REGEX = Pattern.compile("(commentsVotes = ')([\\s\\S]*?)(',)");
+    public final static Pattern LIKES_REGEX = Pattern.compile("\"c([0-9]+)(\":)([0-9]+),");
     // \u8d5e是“赞”的Unicode
     public final static Pattern REPLY_LIKE_REGEX = Pattern.compile("([\\u8d5e])(.*)([0-9]+)(\\))");
 
