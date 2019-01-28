@@ -209,7 +209,6 @@ public class ReplyDecoder implements HtmlDecoder<Reply> {
     /**
      * 回复的点赞数是由html里面的一段js执行更改html内容生成的
      * 因此需要识别到这段js，然后提取json数据
-     * @ todo----
      * @param html 整个html文本
      */
     public void extractLikesToMap(String html) {
