@@ -23,6 +23,7 @@ public class Constant {
 
     // 默认的时间格式
     public final static DateTimeFormatter DEFAULT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public final static DateTimeFormatter DEFAULT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // 时间格式的正则表达式，对应的格式类似于12-12 12:12
     public final static Pattern TIME_REGEX = Pattern.compile("^[0-9]{2}-[0-9]{2}\\s[0-9]{2}:[0-9]{2}$");
@@ -39,6 +40,14 @@ public class Constant {
     public final static Pattern LIKES_REGEX = Pattern.compile("\"c([0-9]+)(\":)([0-9]+),");
     // \u8d5e是“赞”的Unicode
     public final static Pattern REPLY_LIKE_REGEX = Pattern.compile("([\\u8d5e])(.*)([0-9]+)(\\))");
+    public final static Pattern ID_AND_DATE_REGEX = Pattern.compile("([\\s\\S]+)([0-9]{4}-[0-9]{2}-[0-9]{2})(.*)");
+
+    public final static Pattern NUMBER_REGEX = Pattern.compile("([0-9]+)");
+
+    // 电影、音乐和读书的状态（在看/读，想看/听/读，看/听/读过），在（\u5728）表示正在进行中，想（\u60f3）表示计划，过（\u8fc7）表示完成
+    public final static Pattern DOING_STATUS = Pattern.compile("([0-9]+)(.*)([\\u5728])");
+    public final static Pattern WISH_STATUS = Pattern.compile("([0-9]+)(.*)([\\u60f3])");
+    public final static Pattern DONE_STATUS = Pattern.compile("([0-9]+)(.*)([\\u8fc7])");
 
     // 用户代理头
     public final static String[] USER_AGENT_ARRAY = new String[] {
